@@ -77,46 +77,48 @@ def multimshow(images, titles=None, cmaps=None, vmin = None, vmax = None, n_cols
 
 
 
-def rescle(im, scale, getTfo = False):
+def rescle(im, scale, returnTransforMatrix = False):
     """rescale image
     Parameters
     ----------
     im : ndarray
     scale : float
-    getTfo : bool, if true, returns the transformation matrix that was applied on the image
+    returnTransforMatrix : bool, optional,  if true, returns the transformation matrix that was applied on the image
 
     Returns
     -------
-    im :  rescaled image
+    im :  ndarray, rescaled image
+    (im, tfoMat) : tuple, the rescaled image and the transformation matrix used to rescale the image
     """
     rows, cols = im.shape
-    Mat_Tfo = cv.getRotationMatrix2D((cols/2, rows/2), 0, scale)
+    tfoMat = cv.getRotationMatrix2D((cols/2, rows/2), 0, scale)
     
-    if getTfo:
-        return cv.warpAffine(im, Mat_Tfo, (cols, rows)), Mat_Tfo
+    if returnTransforMatrix:
+        return cv.warpAffine(im, tfoMat, (cols, rows)), tfoMat
     
     else:
-        return cv.warpAffine(im, Mat_Tfo, (cols, rows)) 
+        return cv.warpAffine(im, tfoMat, (cols, rows)) 
 
-def rotate(im, rot, getTfo = False):
+def rotate(im, rot, returnTransforMatrix = False):
     """rotates an image around it's central point'
     Parameters
     ----------
     im : ndarray
     rot : float, the rotation angle in degrees
-    getTfo : bool, if true, returns the transformation matrix that was applied on the image
+    returnTransforMatrix : bool, optional if true, returns the transformation matrix that was applied on the image
     
     Returns
     -------
     im :  rotated image
+    (im, tfoMat) : tuple, the rotated image and the transformation matrix used to rescale the image
     """
     rows, cols = im.shape
-    Mat_Tfo = cv.getRotationMatrix2D((cols/2, rows/2), rot, 1)
+    tfoMat = cv.getRotationMatrix2D((cols/2, rows/2), rot, 1)
     
-    if getTfo:
-        return cv.warpAffine(im, Mat_Tfo, (cols, rows)), Mat_Tfo
+    if returnTransforMatrix:
+        return cv.warpAffine(im, tfoMat, (cols, rows)), tfoMat
 
     else:
-        return cv.warpAffine(im, Mat_Tfo, (cols, rows))
+        return cv.warpAffine(im, tfoMat, (cols, rows))
 
 
