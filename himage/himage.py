@@ -1,3 +1,8 @@
+# Copyright (C) 2022, Gog G.
+#
+# License: MIT 
+
+
 import matplotlib.pyplot as plt
 import cv2
 cv = cv2
@@ -72,34 +77,46 @@ def multimshow(images, titles=None, cmaps=None, vmin = None, vmax = None, n_cols
 
 
 
-def rescle(im, scale):
+def rescle(im, scale, getTfo = False):
     """rescale image
     Parameters
     ----------
     im : ndarray
     scale : float
-    
+    getTfo : bool, if true, returns the transformation matrix that was applied on the image
+
     Returns
     -------
     im :  rescaled image
     """
     rows, cols = im.shape
-    Mat_Rot = cv.getRotationMatrix2D((cols//2, rows//2), 0, scale)
-    return cv.warpAffine(im, Mat_Rot, (cols, rows))
+    Mat_Tfo = cv.getRotationMatrix2D((cols/2, rows/2), 0, scale)
+    
+    if getTfo:
+        return cv.warpAffine(im, Mat_Tfo, (cols, rows)), Mat_Tfo
+    
+    else:
+        return cv.warpAffine(im, Mat_Tfo, (cols, rows)) 
 
-def rotate(im, rot):
+def rotate(im, rot, getTfo = False):
     """rotates an image around it's central point'
     Parameters
     ----------
     im : ndarray
     rot : float, the rotation angle in degrees
+    getTfo : bool, if true, returns the transformation matrix that was applied on the image
     
     Returns
     -------
     im :  rotated image
     """
     rows, cols = im.shape
-    Mat_Rot = cv.getRotationMatrix2D((cols//2, rows//2), rot, 1)
-    return cv.warpAffine(im, Mat_Rot, (cols, rows))
+    Mat_Tfo = cv.getRotationMatrix2D((cols/2, rows/2), rot, 1)
+    
+    if getTfo:
+        return cv.warpAffine(im, Mat_Tfo, (cols, rows)), Mat_Tfo
+
+    else:
+        return cv.warpAffine(im, Mat_Tfo, (cols, rows))
 
 
