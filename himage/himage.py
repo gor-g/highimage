@@ -4,17 +4,22 @@ cv = cv2
 
 
 def multimshow(images, titles=None, cmaps=None, vmin = None, vmax = None, n_cols=2, axisOn = False, figsize=None, colwidth=None ):
-    """
-    shows mutiple images in one plot
-    :param images: list or tuple of images
-    :param titles: list or tuple of titles
-    :param cmaps: list or tuple of cmaps or integers (0 for None and 1 for 'gray') or a singla cmap or an integer
-    :param n_cols: int, number of columns of the resulting plot
-    :param axisOn: turn on and of the axis of the plots
-    :param figsize: tuple, of floats, representing the dimensions of the plot
-                    int or float represntig the desired width of the output, the heigth will be calculated automatically
-    :param colwidth: int or float representig the width of the column, can be given instead of a figsize. n_cols = 3 and colwidth = 5 will give the same output as colwidth = 3 and figsize = 15
-    :return: None
+    """shows mutiple images in one plot
+    Parameters
+    ----------
+    images : list or tuple of images
+    titles : list or tuple of titles
+    cmaps : list or tuple of cmaps or integers (0 for None and 1 for 'gray') or a singla cmap or an integer
+    vmin : int or float representig the minimal pixel intensity of the plot
+    vmax : int or float representig the maximal pixel intensity of the plot
+    n_cols : int, number of columns of the resulting plot
+    axisOn : turn on and of the axis of the plots
+    figsize : tuple, of floats, representing the dimensions of the plot
+              int or float represntig the desired width of the output, the heigth will be calculated automatically
+    colwidth : int or float representig the width of the column, can be given instead of a figsize. n_cols = 3 and colwidth = 5 will give the same output as colwidth = 3 and figsize = 15
+    Returns
+    -------
+    None
     """
 
 
