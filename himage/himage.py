@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import cv2
+cv = cv2
 
 
 def multimshow(images, titles=None, cmaps=None, vmin = None, vmax = None, n_cols=2, axisOn = False, figsize=None, colwidth=None ):
@@ -58,3 +60,41 @@ def multimshow(images, titles=None, cmaps=None, vmin = None, vmax = None, n_cols
             plt.title(titles[i])
         plt.imshow(im, cmap=cmaps[i], vmin = vmin[i], vmax=vmax[i])
     plt.show()
+    
+    return None
+
+
+
+
+
+def rescle(im, scale):
+    """rescale image
+    Parameters
+    ----------
+    im : ndarray
+    scale : float
+    
+    Returns
+    -------
+    im :  rescaled image
+    """
+    rows, cols = im.shape
+    Mat_Rot = cv.getRotationMatrix2D((cols//2, rows//2), 0, scale)
+    return cv.warpAffine(im, Mat_Rot, (cols, rows))
+
+def rotate(im, rot):
+    """rotates an image around it's central point'
+    Parameters
+    ----------
+    im : ndarray
+    rot : float, the rotation angle in degrees
+    
+    Returns
+    -------
+    im :  rotated image
+    """
+    rows, cols = im.shape
+    Mat_Rot = cv.getRotationMatrix2D((cols//2, rows//2), rot, 1)
+    return cv.warpAffine(im, Mat_Rot, (cols, rows))
+
+
