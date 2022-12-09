@@ -77,6 +77,70 @@ def multimshow(images, titles=None, cmaps=None, vmin = None, vmax = None, n_cols
 
 
 
+
+#def multPlot(args, titles=None, n_cols=2, axisOn = True, figsize=None, colwidth=None ):
+    #"""shows mutiple images in one plot
+    #Parameters
+    #----------
+    #args : list or tuple of images
+    #titles : list or tuple of titles
+    #cmaps : list or tuple of cmaps or integers (0 for None and 1 for 'gray') or a singla cmap or an integer
+    #n_cols : int, number of columns of the resulting plot
+    #axisOn : turn on and of the axis of the plots
+    #figsize : tuple, of floats, representing the dimensions of the plot
+              #int or float represntig the desired width of the output, the heigth will be calculated automatically
+    #colwidth : int or float representig the width of the column, can be given instead of a figsize. n_cols = 3 and colwidth = 5 will give the same output as colwidth = 3 and figsize = 15
+    #Returns
+    #-------
+    #None
+    #"""
+
+
+    #n_ims = len(args)
+    #n_rows = int(np.ceil(n_ims/n_cols))
+    #if colwidth != None:
+        #assert  (figsize == None), "if colwidth is not None than is being deduced automatically"
+        #figsize = colwidth * n_cols
+
+
+    #if type(figsize)!=tuple and figsize!=None:
+        #figsize = (figsize, figsize/n_cols * n_rows)
+
+
+
+
+
+    #fig = plt.figure(figsize=figsize)
+
+    #for i, argTuple in enumerate(args):
+        #print("\n args = ",argTuple)
+        #print("\n *args = ",*argTuple)
+        #fig.add_subplot(n_rows, n_cols, i+1)
+        #plt.ylim(0, 1)
+        #if not axisOn:
+            #plt.axis('off')
+        #if titles:
+            #plt.title(titles[i])
+        #plt.plot(*argTuple)
+    #plt.show()
+
+    #return None
+
+#a1=np.arange(0,10, 1)
+#a2 = np.arange(0,1, 1/10)
+
+
+
+print(a1)
+print(a2)
+multPlot(((np.hstack((a1, a1)), np.hstack((a2, a2/2))), (a1, a2/2)))
+
+
+
+
+
+
+
 def rescle(im, scale, returnTransforMatrix = False):
     """rescale image
     Parameters
@@ -122,3 +186,32 @@ def rotate(im, rot, returnTransforMatrix = False):
         return cv.warpAffine(im, tfoMat, (cols, rows))
 
 
+
+
+
+
+
+def standardize(im, side = 64):
+    """ Standardize one channel images by adding symetrical "stretch" padding on the sides along the shortest axis 
+    If width < height, the border columns are copyed on both sides till the width is equal to height
+    
+    """
+    r, c = im.shape
+    new_h = np.zeros((max(r, c), max(r, c)), dtype='uint8')
+    if r > c:
+        new_h[:,:(r - c) // 2] = np.repeat(im[:, 1].reshape(-1, 1), (r - c) // 2, axis=1)
+        new_h[:, (r - c) // 2 + c :] = np.repeat(im[:, -2].reshape(-1, 1),
+                                                 (r -( (r - c) // 2 + c) ),
+                                                 axis=1)
+        new_h[:,(r - c) // 2:(r - c) // 2 + c] = im
+        return  np.uint8(cv2.resize(new_h, (side, side)))
+    else:
+        raise NotImplementedError("this function isn't implemented for images wider than their height, use standardize(im.T).T if necessery")
+
+
+def standardizeC3(im, side=64):
+    """ Standardize 3 channel images by adding symetrical "stretch" padding on the sides along the shortest axis 
+    If width < height, the border columns are copyed on both sides till the width is equal to height
+
+    """
+    return cv2.merge([standardize(c, side) for c in cv2.split(im)])
