@@ -1,1 +1,10 @@
-A set of divers convenient functions useful in image processing, written in python. For example multimshow that is simply used to plot multiple images in one command, instead of defining a figure and axis manually.
+A set of various convenient functions useful in image processing, written in python.
+
+## Example of usage
+
+```py
+from himage import imshow, multimshow
+
+imshow(image_to_show)
+multimshow(image_list_or_array, title_list = list_or_array_of_titles, n_cols=number_of_columns)
+```
