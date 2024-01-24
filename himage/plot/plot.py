@@ -14,24 +14,24 @@ def deduce_limits(im):
         vmax = 255
     return vmin, vmax
 
-def imshow(im, title=None, cmap=None, limits = None, dpi = None, axis_on = False, figsize=None):
+def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, axis_on = False):
     """shows an image with matplotlib
     Parameters
     ----------
     im : ndarray
     title : string, optional
+    figsize : tuple, of floats, representing the dimensions of the plot
+              int or float represntig the desired width of the output, the heigth will be calculated automatically
     cmap : string, possible values are the same as in matplotlib.pyplot.imshow. 
             If None is provided and the image have a single channel, the
             cmap is set to 'gray' instead of matplotlib's default cmap for single channel images.
     limits : (vmin, vmax) a pair of int or float values representig the minimal pixel intensity of the plot.
     dpi : int, dots per inch
     axis_on : turn on and of the axis of the plots
-    figsize : tuple, of floats, representing the dimensions of the plot
-              int or float represntig the desired width of the output, the heigth will be calculated automatically
     """
 
 
-    vmin, vmax = limits if limits else deduce_limits(im)
+    vmin, vmax = limits if limits is not None else deduce_limits(im)
 
     if cmap is None and im.ndim == 2:
         cmap = 'gray'
@@ -47,20 +47,24 @@ def imshow(im, title=None, cmap=None, limits = None, dpi = None, axis_on = False
 
     plt.tight_layout()
     plt.imshow(im, cmap=cmap, vmin = vmin, vmax=vmax)
-    if title:
-        plt.title(title)
+    if title is not None:
+        plt.title(str(title))
     plt.show()
     
     return None
 
 
 
-def multimshow(images, titles=None, cmap=None, limits=None, n_cols=2, dpi = None, axis_on = False, figsize=None, colwidth=None ):
+def multimshow(images, titles=None, n_cols=2, figsize=10, colwidth=None,  cmap=None, limits=None,  dpi = None, axis_on = False ):
     """shows mutiple images in one plot
     Parameters
     ----------
     images : list or tuple of images
     titles : list or tuple of titles
+    n_cols : int, number of columns of the resulting plot
+    figsize : tuple, of floats, representing the dimensions of the plot
+              int or float represntig the desired width of the output, the heigth will be calculated automatically
+    colwidth : int or float representig the width of the column, can be given instead of a figsize. n_cols = 3 and colwidth = 5 will give the same output as colwidth = 3 and figsize = 15
     cmap : string, the cmap for single channel images. Possible values are the same as in matplotlib.pyplot.imshow.
             If None is provided and the image have a single channel, the cmap is set to 'gray' instead of 
             matplotlib's default cmap for single channel images.
@@ -68,11 +72,7 @@ def multimshow(images, titles=None, cmap=None, limits=None, n_cols=2, dpi = None
     limits : (vmin, vmax) a pair of int or float values representig the minimal pixel intensity of the plot.
              If None is provided, the limits are deduced individually for each image.
     dpi : int, dots per inch
-    n_cols : int, number of columns of the resulting plot
     axis_on : turn on and of the axis of the plots
-    figsize : tuple, of floats, representing the dimensions of the plot
-              int or float represntig the desired width of the output, the heigth will be calculated automatically
-    colwidth : int or float representig the width of the column, can be given instead of a figsize. n_cols = 3 and colwidth = 5 will give the same output as colwidth = 3 and figsize = 15
     Returns
     -------
     None
@@ -95,7 +95,7 @@ def multimshow(images, titles=None, cmap=None, limits=None, n_cols=2, dpi = None
         cmap = 'gray'
 
 
-    fig = plt.figure(figsize=figsize)
+    fig = plt.figure(figsize=figsize, dpi=dpi, frameon=False)
 
     for i, im in enumerate(images):
 
@@ -103,9 +103,9 @@ def multimshow(images, titles=None, cmap=None, limits=None, n_cols=2, dpi = None
 
         # it isnt very efficient to repetedly do this tests for values that don't change
         # but since nobody is going to plot thousands of images, it's better to keep the code simple
-        vmin, vmax = limits if limits else deduce_limits(im)
+        vmin, vmax = limits if limits is not None else deduce_limits(im)
         if not axis_on: plt.axis('off')
-        if titles:     plt.title(titles[i])
+        if titles is not None:     plt.title(str(titles[i]))
 
         plt.imshow(im, cmap=cmap, vmin = vmin, vmax=vmax)
         plt.tight_layout()
