@@ -13,7 +13,7 @@ multimshow( [im_gray * 0.05 * i for i in range(20)],
             n_cols=5,
             figsize=10,
             colwidth=2
-)
+) # expected to raise a warning
 
 
 im_yellow = np.ones((20, 10, 3))*.9
