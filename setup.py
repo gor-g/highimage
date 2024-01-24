@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='himage',
-    version='0.0.3',
+    version='0.0.4',
     description='A small library, of high level image processing tools',
     url='https://github.com/mySpecialUsername/highImage/',
     author='Gor G.',
