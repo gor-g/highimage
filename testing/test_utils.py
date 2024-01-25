@@ -1,5 +1,5 @@
 import numpy as np
-from himage.utils import deduce_limits, normalize_manual, normalize_min_max, normalize_limits, normalize
+from himage.utils import deduce_limits, normalize_manual, normalize_min_max, normalize_limits, normalize, clip
 
 
 im_int_gray = np.ones((5, 5), dtype=np.uint8)
@@ -124,3 +124,31 @@ def test_normlize():
 
     assert np.allclose(normalize(im_float_gray*42, 'limits'), 42/255, atol=1e-7, rtol=0)
     assert np.allclose(normalize(im_float_rgb*42, 'limits'), 42/255, atol=1e-7, rtol=0)
+
+
+def test_clip():
+    print(im_int_gray)
+    print(clip(im_int_gray))
+    assert np.allclose(clip(im_int_gray), 1/255, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_int_rgb), 1/255, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_int_gray*0), 0, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_int_rgb*0), 0, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_int_gray*42), 42/255, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_int_rgb*42), 42/255, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_float_gray), 1, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_float_rgb), 1, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_float_gray*0), 0, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_float_rgb*0), 0, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_float_gray*42), 42/255, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_float_rgb*42), 42/255, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_float_gray*8), 1, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_float_rgb*8), 1, atol=1e-7, rtol=0)
+
+    assert np.allclose(clip(im_float_gray*0.9), 0.9, atol=1e-7, rtol=0)
+    assert np.allclose(clip(im_float_rgb*0.9), 0.9, atol=1e-7, rtol=0)
