@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from warnings import warn
-from himage.utils import deduce_limits
+from himage.utils import deduce_limits, normalize_manual
 
 
 
@@ -20,9 +20,6 @@ def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, a
     axis_on : turn on and of the axis of the plots
     """
 
-
-    vmin, vmax = limits if limits is not None else deduce_limits(im)
-
     if cmap is None and im.ndim == 2:
         cmap = 'gray'
 
@@ -36,7 +33,7 @@ def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, a
         plt.axis('off')
 
     plt.tight_layout()
-    plt.imshow(im, cmap=cmap, vmin = vmin, vmax=vmax)
+    plt.imshow(normalize_manual(im, *deduce_limits(im)), cmap=cmap, vmin = 0, vmax=1)
     if title is not None:
         plt.title(str(title))
     plt.show()
@@ -59,8 +56,6 @@ def multimshow(images, titles=None, n_cols=2, figsize=10, colwidth=None,  cmap=N
             If None is provided and the image have a single channel, the cmap is set to 'gray' instead of 
             matplotlib's default cmap for single channel images.
             If the color images are mixed with single channel images, the cmap will be ignored for the color images.
-    limits : (vmin, vmax) a pair of int or float values representig the minimal pixel intensity of the plot.
-             If None is provided, the limits are deduced individually for each image.
     dpi : int, dots per inch
     axis_on : turn on and of the axis of the plots
     Returns
@@ -93,11 +88,10 @@ def multimshow(images, titles=None, n_cols=2, figsize=10, colwidth=None,  cmap=N
 
         # it isnt very efficient to repetedly do this tests for values that don't change
         # but since nobody is going to plot thousands of images, it's better to keep the code simple
-        vmin, vmax = limits if limits is not None else deduce_limits(im)
         if not axis_on: plt.axis('off')
         if titles is not None:     plt.title(str(titles[i]))
 
-        plt.imshow(im, cmap=cmap, vmin = vmin, vmax=vmax)
+        plt.imshow(normalize_manual(im, *deduce_limits(im)), cmap=cmap)
         plt.tight_layout()
 
     plt.show()
