@@ -17,7 +17,7 @@ def imread(path):
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
     else:
         pass
-    return im
+    return im.astype(float)/255
 
 
 def imwrite(im, path):
