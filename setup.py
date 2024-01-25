@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='himage',
-    version='0.1.1',
+    version='0.1.2',
     description='A small library, of high level image processing tools',
     url='https://github.com/mySpecialUsername/highImage/',
     author='Gor G.',
