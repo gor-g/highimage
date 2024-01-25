@@ -1,1 +1,1 @@
-from .utils import deduce_limits, normalize_manual, normalize_min_max, normalize_limits, normalize
+from .utils import deduce_limits, normalize_manual, normalize_min_max, normalize_limits, normalize, clip

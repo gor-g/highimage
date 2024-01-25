@@ -1,11 +1,13 @@
 import numpy as np
 
 
-def deduce_limits(im):
-    """deduces the limits for the imshow function. 
-    returns 0, 1 if the image is in the range [0, 1] and 0, 255 otherwise"""
+def deduce_limits(im, tolerance_factor = 1):
+    """
+    deduces the limits for the imshow function. 
+    returns 0, 1 if the image is a float in the range [0, tolerance_factor] and 0, 255 otherwise
+    """
     vmin = 0
-    if isinstance(im.flat[0], np.floating) and im.max() <= 1:
+    if isinstance(im.flat[0], np.floating) and im.max() <= tolerance_factor:
         vmax = 1
     else:
         vmax = 255
@@ -56,3 +58,12 @@ def normalize(im, method = 'limits', ):
         return normalize_limits(im)
     else:
         raise ValueError('method must be either minmax or limits')
+    
+
+def clip(im, vmax= 'auto'):
+    if vmax == 'auto':
+        vmin, vmax = deduce_limits(im, 10)
+    else:
+        vmin = 0
+    print(vmin, vmax)
+    return np.clip(im, vmin, vmax)
