@@ -65,5 +65,4 @@ def clip(im, vmax= 'auto'):
         vmin, vmax = deduce_limits(im, 10)
     else:
         vmin = 0
-    print(vmin, vmax)
-    return np.clip(im, vmin, vmax)
+    return np.clip(im, vmin, vmax)/vmax
