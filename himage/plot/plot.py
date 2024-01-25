@@ -2,17 +2,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from warnings import warn
+from himage.utils import deduce_limits
 
 
-
-def deduce_limits(im):
-    """deduces the limits for the imshow function"""
-    vmin = 0
-    if isinstance(im.flat[0], np.floating) and im.max() <= 1:
-        vmax = 1
-    else:
-        vmax = 255
-    return vmin, vmax
 
 def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, axis_on = False):
     """shows an image with matplotlib
@@ -20,11 +12,9 @@ def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, a
     ----------
     im : ndarray
     title : string, optional
-    figsize : tuple, of floats, representing the dimensions of the plot
-              int or float represntig the desired width of the output, the heigth will be calculated automatically
+    figsize : tuple, of floats, representing the dimensions of the plot int or float represntig the desired width of the output, the heigth will be calculated automatically
     cmap : string, possible values are the same as in matplotlib.pyplot.imshow. 
-            If None is provided and the image have a single channel, the
-            cmap is set to 'gray' instead of matplotlib's default cmap for single channel images.
+            If None is provided and the image have a single channel, the cmap is set to 'gray' instead of matplotlib's default cmap for single channel images.
     limits : (vmin, vmax) a pair of int or float values representig the minimal pixel intensity of the plot.
     dpi : int, dots per inch
     axis_on : turn on and of the axis of the plots
