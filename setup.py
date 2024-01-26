@@ -7,7 +7,7 @@ setup(
     name='himage',
     version='0.1.2',
     description='A small library, of high level image processing tools',
-    url='https://github.com/mySpecialUsername/highImage/',
+    url='https://github.com/mySpecialUsername/highimage',
     author='Gor G.',
     packages=find_packages(),
     install_requires=['numpy', 'opencv-python', 'matplotlib', 'PyQt6'],
