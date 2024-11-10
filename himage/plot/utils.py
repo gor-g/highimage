@@ -4,6 +4,8 @@ from himage.utils import deduce_limits
 def parse_cmap(cmap: str | None, im: Image):
     if cmap is None and im.ndim == 2:
         _cmap = 'gray'
+    elif cmap is None:
+        _cmap = 'viridis'
     else:
         _cmap = cmap
     return _cmap
