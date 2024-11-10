@@ -1,6 +1,7 @@
 import cv2
 from himage.utils import deduce_limits
 from himage.types import Image
+import os
 
 def imread(path:str):
     """reads an image from a path
@@ -21,7 +22,7 @@ def imread(path:str):
     return im.astype(float)/255
 
 
-def imwrite(im:Image, path:str):
+def imwrite(im:Image, path:str, create_path:bool = False):
     """writes an image to a path
     Parameters
     ----------
@@ -37,5 +38,11 @@ def imwrite(im:Image, path:str):
     
     if im.ndim == 3:
         im = im[:,:,::-1]
+
+    if not os.path.exists(os.path.dirname(path)):
+        if create_path:
+            os.makedirs(os.path.dirname(path))
+        else:
+            raise OSError("The provided path is invalid. You can use the create_path argument.")
     cv2.imwrite(path, im)
 
