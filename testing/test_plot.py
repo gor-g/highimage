@@ -32,5 +32,8 @@ imshow(im_yellow, cmap='gray') # expecting the cmap to be ignored
 imwrite(im_yellow, 'test.png')
 imshow(imread('test.png'), title='imread and imwrite test.png')
 
-imwrite(im_yellow, 'test.jpg')
-imshow(imread('test.jpg'), title='imread and imwrite test.jpg')
+imwrite(im_yellow, '../test.png')
+imshow(imread('../test.png'), title='imread and imwrite test.png')
+
+imwrite(im_yellow, './test.jpg')
+imshow(imread('./test.jpg'), title='imread and imwrite test.jpg')

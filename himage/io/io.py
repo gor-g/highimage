@@ -3,7 +3,7 @@ from himage.utils import deduce_limits
 from himage.types import Image
 import os
 
-def imread(path:str):
+def imread(path:str, normalize:bool = True) -> Image:
     """reads an image from a path
     Parameters
     ----------
@@ -19,7 +19,12 @@ def imread(path:str):
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
     else:
         pass
-    return im.astype(float)/255
+    if normalize:
+        _, vmax = deduce_limits(im)
+        if vmax > 1:
+            im = im.astype(float)/255
+
+    return im
 
 
 def imwrite(im:Image, path:str, create_path:bool = False):
@@ -39,10 +44,12 @@ def imwrite(im:Image, path:str, create_path:bool = False):
     if im.ndim == 3:
         im = im[:,:,::-1]
 
-    if not os.path.exists(os.path.dirname(path)):
-        if create_path:
-            os.makedirs(os.path.dirname(path))
-        else:
-            raise OSError("The provided path is invalid. You can use the create_path argument.")
+    location = os.path.dirname(path)
+    if location != "":
+        if not os.path.exists(location):
+            if create_path:
+                os.makedirs(location)
+            else:
+                raise OSError("The provided path is invalid. You can use the create_path argument.")
     cv2.imwrite(path, im)
 
