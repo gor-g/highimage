@@ -1,7 +1,9 @@
 import numpy as np
+from himage.types import Image
+from typing import Literal
 
 
-def deduce_limits(im, tolerance_factor = 1):
+def deduce_limits(im: Image, tolerance_factor: float = 1):
     """
     deduces the limits for the imshow function. 
     returns 0, 1 if the image is a float in the range [0, tolerance_factor] and 0, 255 otherwise
@@ -13,12 +15,11 @@ def deduce_limits(im, tolerance_factor = 1):
         vmax = 255
     return vmin, vmax
 
-
-def normalize_manual(im, vmin, vmax):
+def normalize_manual(im: Image, vmin: float, vmax: float):
     """normalizes an image to be in the range [0, 1] relative to the provided values"""
     return (im - vmin) / (vmax - vmin)
 
-def normalize_min_max(im):
+def normalize_min_max(im: Image):
     """normalizes an image to be in the range [0, 1] relative to its maximum and minimum values"""
     vmin, vmax = im.min(), im.max()
 
@@ -30,13 +31,12 @@ def normalize_min_max(im):
     else:
         return (im - vmin) / (vmax - vmin)
 
-
-def normalize_limits(im):
+def normalize_limits(im: Image):
     """normalizes an image to be in the range [0, 1] relative to its limit values"""
-    vmin, vmax = deduce_limits(im) 
+    _, vmax = deduce_limits(im) 
     return im/vmax
 
-def normalize(im, method = 'limits', ):
+def normalize(im:Image, method: str = 'limits', ):
     """normalizes an image to be in the range [0, 1] relative to its maximum and minimum values
     Parameters
     ----------
@@ -58,9 +58,8 @@ def normalize(im, method = 'limits', ):
         return normalize_limits(im)
     else:
         raise ValueError('method must be either minmax or limits')
-    
 
-def clip(im, vmax= 'auto'):
+def clip(im: Image, vmax: Literal['auto'] | float = 'auto'):
     if vmax == 'auto':
         vmin, vmax = deduce_limits(im, 10)
     else:

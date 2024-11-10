@@ -5,13 +5,13 @@ with open('README.md', 'r') as f:
 
 setup(
     name='himage',
-    version='0.1.2',
+    version='1.0.0',
     description='A small library, of high level image processing tools',
     url='https://github.com/mySpecialUsername/highimage',
     author='Gor G.',
     packages=find_packages(),
     install_requires=['numpy', 'opencv-python', 'matplotlib', 'PyQt6'],
-    python_requires='>=3.6',
+    python_requires='>=3.10',
     zip_safe=False,
     long_description=long_description,
     long_description_content_type='text/markdown'

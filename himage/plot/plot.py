@@ -3,10 +3,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 from warnings import warn
 from himage.utils import deduce_limits, normalize_manual
+from himage.types import Image, Real
+from himage.plot.utils import parse_cmap, parse_limits, parse_figsize
 
 
-
-def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, axis_on = False):
+def imshow( im: Image, title: str | None = None,
+            figsize: Real | tuple[Real, Real] | None = None,
+            cmap: str | None = None,
+            limits: tuple[Real, Real] | None = None,
+            dpi:int | None = None,
+            axis_on: bool = False
+            ) -> None:
     """shows an image with matplotlib
     Parameters
     ----------
@@ -20,20 +27,17 @@ def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, a
     axis_on : turn on and of the axis of the plots
     """
 
-    if cmap is None and im.ndim == 2:
-        cmap = 'gray'
+    _cmap = parse_cmap(cmap, im)
+    _limits = parse_limits(limits, im)
+    _figsize = parse_figsize(figsize, im)
 
-    if type(figsize)!=tuple and figsize!=None:
-        w, h = im.shape
-        figsize = (h/w * figsize, figsize)
-
-    plt.figure(figsize=figsize, dpi=dpi, frameon=False)
+    plt.figure(figsize=_figsize, dpi=dpi, frameon=False)
 
     if not axis_on:
         plt.axis('off')
 
     plt.tight_layout()
-    plt.imshow(normalize_manual(im, *deduce_limits(im)), cmap=cmap, vmin = 0, vmax=1)
+    plt.imshow(normalize_manual(im, *_limits), cmap=_cmap, vmin = 0, vmax=1)
     if title is not None:
         plt.title(str(title))
     plt.show()
@@ -42,7 +46,15 @@ def imshow(im, title=None, figsize=None, cmap=None, limits = None, dpi = None, a
 
 
 
-def multimshow(images, titles=None, n_cols=2, figsize=10, colwidth=None,  cmap=None, limits=None,  dpi = None, axis_on = False ):
+def multimshow(images: list[Image],
+               titles: list[str] | None=None, 
+               n_cols: int = 2,
+               figsize: Real | tuple[Real, Real] | None  =10,
+               colwidth: Real| None = None,
+               cmap: str | None=None,
+               limits: tuple[Real, Real] | None=None,
+               dpi: int | None = None,
+               axis_on: bool = False ):
     """shows mutiple images in one plot
     Parameters
     ----------
@@ -66,19 +78,18 @@ def multimshow(images, titles=None, n_cols=2, figsize=10, colwidth=None,  cmap=N
 
     n_ims = len(images)
     n_rows = int(np.ceil(n_ims/n_cols))
-    if colwidth != None:
-        if figsize != None:
+    if colwidth is not None:
+        if figsize is not None:
             warn("If colwidth is not None, figsize is being deduced automatically. The user provided figsize is ignored.")
         figsize = colwidth * n_cols
 
 
-    if type(figsize)!=tuple and figsize!=None:
+    if type(figsize)==float or type(figsize) == int:
         figsize = (figsize, figsize/n_cols * n_rows)
 
 
     if cmap is None:
         cmap = 'gray'
-
 
     fig = plt.figure(figsize=figsize, dpi=dpi, frameon=False)
 
@@ -88,10 +99,12 @@ def multimshow(images, titles=None, n_cols=2, figsize=10, colwidth=None,  cmap=N
 
         # it isnt very efficient to repetedly do this tests for values that don't change
         # but since nobody is going to plot thousands of images, it's better to keep the code simple
-        if not axis_on: plt.axis('off')
-        if titles is not None:     plt.title(str(titles[i]))
+        if not axis_on: 
+            plt.axis('off')
+        if titles is not None: 
+            plt.title(str(titles[i]))
 
-        plt.imshow(normalize_manual(im, *deduce_limits(im)), cmap=cmap)
+        plt.imshow(normalize_manual(im, *deduce_limits(im)), cmap=cmap, vmin=0, vmax=1)
         plt.tight_layout()
 
     plt.show()

@@ -1,7 +1,8 @@
 import cv2
 from himage.utils import deduce_limits
+from himage.types import Image
 
-def imread(path):
+def imread(path:str):
     """reads an image from a path
     Parameters
     ----------
@@ -20,7 +21,7 @@ def imread(path):
     return im.astype(float)/255
 
 
-def imwrite(im, path):
+def imwrite(im:Image, path:str):
     """writes an image to a path
     Parameters
     ----------
@@ -30,7 +31,7 @@ def imwrite(im, path):
     -------
     None
     """
-    vmin, vmax = deduce_limits(im)
+    _, vmax = deduce_limits(im)
     if vmax == 1:
         im = im*255
     
