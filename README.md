@@ -11,6 +11,8 @@ This library is designed to easily give you access to images as `np.arrays`:
 - The functions used to plot the images are using `matplotlib`, which is compatible with `.ipynb` notebooks.
 - It's easy to plot multiple images in a clean layout using `multimshow`.
 
+Take a loot at [READMY.ipynb](https://github.com/gor-g/highimage/blob/main/README.ipynb) for more visaul examples. 
+
 
 ## Example of usage
 
